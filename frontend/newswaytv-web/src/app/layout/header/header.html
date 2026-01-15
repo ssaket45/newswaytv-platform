@@ -3,19 +3,22 @@
 		<div class="logo">
 			<a routerLink="/" class="logo-link">NewsWayTV</a>
 		</div>
-		<nav class="main-nav" aria-label="Main Navigation">
-			<button class="nav-toggle" aria-label="Toggle navigation" (click)="showNav = !showNav">
+		<nav class="main-nav" aria-label="Main Navigation" #mainNav>
+			<button class="nav-toggle" #navToggle aria-label="Toggle navigation" (click)="toggleNav($event)">
 				&#9776;
 			</button>
 			<ul [class.open]="showNav">
-				<li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">Home</a></li>
-				<li><a routerLink="/category/celebrity" routerLinkActive="active">Celebrity</a></li>
-				<li><a routerLink="/category/auto-bike" routerLinkActive="active">Auto &amp; Bike</a></li>
-				<li><a routerLink="/category/tech" routerLinkActive="active">Tech</a></li>
-				<li><a routerLink="/category/festivals" routerLinkActive="active">Festivals</a></li>
-				<li><a routerLink="/about" routerLinkActive="active">About</a></li>
-				<li><a routerLink="/contact" routerLinkActive="active">Contact</a></li>
+				<li><a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }" (click)="closeNav()">Home</a></li>
+				<li><a routerLink="/category/celebrity" routerLinkActive="active" (click)="closeNav()">Celebrity</a></li>
+				<li><a routerLink="/category/auto-bike" routerLinkActive="active" (click)="closeNav()">Auto &amp; Bike</a></li>
+				<li><a routerLink="/category/tech" routerLinkActive="active" (click)="closeNav()">Tech</a></li>
+				<li><a routerLink="/category/festivals" routerLinkActive="active" (click)="closeNav()">Festivals</a></li>
+				<li><a routerLink="/about" routerLinkActive="active" (click)="closeNav()">About</a></li>
+				<li><a routerLink="/contact" routerLinkActive="active" (click)="closeNav()">Contact</a></li>
 			</ul>
 		</nav>
 	</div>
 </header>
+        <!-- <button class="nav-toggle" aria-label="Toggle navigation" (click)="toggleNav($event)">
+            &#9776;
+        </button> -->

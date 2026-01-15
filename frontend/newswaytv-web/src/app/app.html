@@ -183,11 +183,15 @@
 </style>
 
 
+
 <ng-container *ngIf="!router.url.startsWith('/admin/login')">
   <app-header></app-header>
+  <app-latest-update [text]="latestUpdateText"></app-latest-update>
 </ng-container>
 
-<router-outlet></router-outlet>
+<div class="main-content">
+  <router-outlet></router-outlet>
+</div>
 
 <ng-container *ngIf="!router.url.startsWith('/admin/login')">
   <app-footer></app-footer>
