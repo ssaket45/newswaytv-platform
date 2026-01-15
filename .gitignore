@@ -1,0 +1,53 @@
+# Node
+node_modules/
+dist/
+build/
+.env
+.env.*
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# Angular
+.angular/cache/
+.angular/config.json
+# OS
+.DS_Store
+Thumbs.db
+# VSCode
+.vscode/
+# Logs
+logs/
+*.log
+# Misc
+*.tgz
+.idea/
+*.sublime-workspace
+*.sublime-project
+coverage/
+# Dependency directories
+jspm_packages/
+# Optional npm cache directory
+.npm
+# Optional eslint cache
+.eslintcache
+# Optional REPL history
+.node_repl_history
+# Output of 'npm pack'
+*.tgz
+# Compiled source #
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+# Package distribution
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip

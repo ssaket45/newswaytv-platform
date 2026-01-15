@@ -1,0 +1,10 @@
+<main class="category-page">
+	<h1>{{ categoryName }} News</h1>
+	<section class="articles-list" aria-label="Articles">
+		<article *ngFor="let article of articles" class="article-card">
+			<h2>{{ article.title }}</h2>
+			<p class="desc">{{ article.description }}</p>
+			<time class="date" [attr.datetime]="article.date">{{ article.date | date:'longDate' }}</time>
+		</article>
+	</section>
+</main>
