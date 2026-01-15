@@ -18,11 +18,25 @@
 }
 
 .logo-link {
-	font-size: 1.5rem;
+	font-size: 2rem;
 	font-weight: bold;
 	color: #222;
 	text-decoration: none;
 	letter-spacing: 1px;
+	padding: 0.2rem 0.7rem 0.2rem 0;
+	display: flex;
+	align-items: center;
+	transition: color 0.2s;
+}
+.logo-link:focus, .logo-link:hover {
+	color: #0056b3;
+	outline: none;
+}
+.logo-text {
+	font-family: inherit;
+	font-weight: 700;
+	letter-spacing: 1.5px;
+	/* text-transform: uppercase; */
 }
 
 .main-nav {
@@ -60,10 +74,13 @@
 	transition: background 0.2s;
 }
 
-.main-nav li a.active,
+.main-nav li a.active-link,
 .main-nav li a:hover {
-	background: #f0f0f0;
-	color: #222;
+	background: #222;
+	color: #ffe066;
+	font-weight: 600;
+	border-radius: 4px;
+	transition: background 0.2s, color 0.2s;
 }
 
 @media (max-width: 700px) {

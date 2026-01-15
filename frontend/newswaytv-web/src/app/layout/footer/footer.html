@@ -1,16 +1,21 @@
 <footer class="site-footer" aria-label="Footer">
 	<div class="footer-container">
-		<nav class="footer-nav" aria-label="Footer Navigation">
-			<ul>
-				<li><a routerLink="/about" routerLinkActive="active">About Us</a></li>
-				<li><a routerLink="/contact" routerLinkActive="active">Contact Us</a></li>
-				<li><a routerLink="/privacy-policy" routerLinkActive="active">Privacy Policy</a></li>
-				<li><a routerLink="/terms" routerLinkActive="active">Terms &amp; Conditions</a></li>
-				<li><a routerLink="/disclaimer" routerLinkActive="active">Disclaimer</a></li>
-			</ul>
-		</nav>
+		<div class="footer-main">
+			<div class="footer-description">
+				NewsWayTV brings you the latest news, updates, and stories from around the world. Stay informed, stay ahead.
+			</div>
+			<nav class="footer-nav" aria-label="Footer Navigation">
+				<ul>
+					<li><a routerLink="/about" routerLinkActive="active">About Us</a></li>
+					<li><a routerLink="/contact" routerLinkActive="active">Contact Us</a></li>
+					<li><a routerLink="/privacy-policy" routerLinkActive="active">Privacy Policy</a></li>
+					<li><a routerLink="/terms" routerLinkActive="active">Terms &amp; Conditions</a></li>
+					<li><a routerLink="/disclaimer" routerLinkActive="active">Disclaimer</a></li>
+				</ul>
+			</nav>
+		</div>
 		<div class="copyright">
-			&copy; NewsWayTV. All rights reserved 2026
+			&copy; {{ year }} NewsWayTV. All rights reserved.
 		</div>
 	</div>
 </footer>

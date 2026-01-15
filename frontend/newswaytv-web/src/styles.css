@@ -1,1 +1,66 @@
-/* You can add global styles to this file, and also import other style files */
+
+/* Global UI Consistency & Polish */
+html {
+	box-sizing: border-box;
+	font-size: 16px;
+	scroll-behavior: smooth;
+}
+*, *::before, *::after {
+	box-sizing: inherit;
+}
+body {
+	font-family: 'Segoe UI', 'Roboto', 'Arial', sans-serif;
+	color: #232323;
+	background: #fafbfc;
+	line-height: 1.7;
+	margin: 0;
+	padding: 0;
+	font-size: 1rem;
+}
+
+main, .main-content, .category-page, .article-page, .about-page, .homepage {
+	max-width: 700px;
+	margin: 0 auto;
+	padding: 1.2rem 1rem 2.5rem 1rem;
+	background: transparent;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: inherit;
+	font-weight: 600;
+	color: #1a1a1a;
+	margin-top: 1.5rem;
+	margin-bottom: 0.7rem;
+	line-height: 1.2;
+}
+h1 { font-size: 2.1rem; }
+h2 { font-size: 1.4rem; }
+h3 { font-size: 1.1rem; }
+
+p, ul, ol {
+	margin-top: 0;
+	margin-bottom: 1.1rem;
+}
+ul, ol {
+	padding-left: 1.3rem;
+}
+a {
+	color: #0a5b9c;
+	text-decoration: none;
+	transition: color 0.2s;
+}
+a:hover, a:focus {
+	color: #08406b;
+	text-decoration: underline;
+}
+
+@media (max-width: 700px) {
+	main, .main-content, .category-page, .article-page, .about-page, .homepage {
+		max-width: 100vw;
+		padding: 1rem 0.5rem 2rem 0.5rem;
+	}
+	h1 { font-size: 1.5rem; }
+	h2 { font-size: 1.15rem; }
+	h3 { font-size: 1rem; }
+	body { font-size: 0.98rem; }
+}

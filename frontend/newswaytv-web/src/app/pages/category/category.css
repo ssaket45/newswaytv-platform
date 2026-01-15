@@ -33,6 +33,46 @@ h2 {
 	font-size: 0.95rem;
 	color: #888;
 }
+/* Loading Placeholder Styles */
+.loading-section {
+	display: flex;
+	flex-direction: column;
+	gap: 1.2rem;
+	margin-bottom: 2rem;
+}
+.loading-placeholder {
+	background: #f6f6f6;
+	border-radius: 8px;
+	box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+	min-height: 90px;
+	animation: pulse 1.2s infinite ease-in-out alternate;
+}
+.skeleton-title {
+	width: 60%;
+	height: 1.2rem;
+	background: #e0e0e0;
+	border-radius: 4px;
+}
+.skeleton-desc {
+	width: 90%;
+	height: 0.9rem;
+	background: #e0e0e0;
+	border-radius: 4px;
+}
+.skeleton-date {
+	width: 40%;
+	height: 0.8rem;
+	background: #e0e0e0;
+	border-radius: 4px;
+}
+@keyframes pulse {
+	0% { opacity: 1; }
+	100% { opacity: 0.5; }
+}
 @media (max-width: 600px) {
 	.category-page {
 		padding: 0.5rem;

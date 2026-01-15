@@ -1,6 +1,25 @@
 <main class="category-page">
 	<h1>{{ categoryName }} News</h1>
-	<section class="articles-list" aria-label="Articles">
+
+	<section *ngIf="loading" class="loading-section" aria-busy="true" aria-live="polite">
+		<div class="loading-placeholder">
+			<div class="skeleton-title"></div>
+			<div class="skeleton-desc"></div>
+			<div class="skeleton-date"></div>
+		</div>
+		<div class="loading-placeholder">
+			<div class="skeleton-title"></div>
+			<div class="skeleton-desc"></div>
+			<div class="skeleton-date"></div>
+		</div>
+		<div class="loading-placeholder">
+			<div class="skeleton-title"></div>
+			<div class="skeleton-desc"></div>
+			<div class="skeleton-date"></div>
+		</div>
+	</section>
+
+	<section *ngIf="!loading" class="articles-list" aria-label="Articles">
 		<article *ngFor="let article of articles" class="article-card">
 			<h2>{{ article.title }}</h2>
 			<p class="desc">{{ article.description }}</p>
