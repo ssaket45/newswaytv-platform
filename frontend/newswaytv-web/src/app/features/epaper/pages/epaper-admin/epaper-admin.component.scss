@@ -1,0 +1,90 @@
+@use '../../styles/epaper-theme' as theme;
+
+.epaper-admin {
+  min-height: 100vh;
+  padding: 32px 20px 60px;
+  background: theme.$paper-bg;
+  color: theme.$ink;
+}
+
+.header {
+  max-width: 900px;
+  margin: 0 auto 24px;
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: theme.$muted-ink;
+}
+
+.subtext {
+  color: theme.$muted-ink;
+}
+
+.form {
+  @include theme.paper-card;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+label {
+  display: grid;
+  gap: 6px;
+  font-weight: 600;
+}
+
+input,
+select {
+  border: 1px solid theme.$border;
+  border-radius: 8px;
+  padding: 10px 12px;
+  font-size: 1rem;
+  background: theme.$paper-card;
+  color: theme.$ink;
+}
+
+.actions {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+button {
+  border: none;
+  background: theme.$accent;
+  color: #ffffff;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.success {
+  color: theme.$accent;
+  font-weight: 600;
+}
+
+.status {
+  color: theme.$muted-ink;
+  font-weight: 600;
+}
+
+.error {
+  color: #b42318;
+  font-weight: 600;
+}

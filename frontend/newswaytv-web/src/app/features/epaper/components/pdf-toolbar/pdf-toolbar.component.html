@@ -1,0 +1,28 @@
+<div class="toolbar">
+  <div class="toolbar-section">
+    <button type="button" (click)="prevPage.emit()" [disabled]="isFirstPage">
+      Prev
+    </button>
+    <span class="page-indicator">Page {{ pageNumber }} / {{ pageCount }}</span>
+    <button type="button" (click)="nextPage.emit()" [disabled]="isLastPage">
+      Next
+    </button>
+  </div>
+  <div class="toolbar-section">
+    <button type="button" (click)="zoomOut.emit()" [disabled]="!canZoomOut">
+      -
+    </button>
+    <span class="zoom-indicator">{{ (zoom * 100) | number: '1.0-0' }}%</span>
+    <button type="button" (click)="zoomIn.emit()" [disabled]="!canZoomIn">
+      +
+    </button>
+  </div>
+  <div class="toolbar-section">
+    <button type="button" class="download" (click)="download.emit()">
+      Download PDF
+    </button>
+    <button type="button" class="fullscreen" (click)="toggleFullscreen.emit()">
+      {{ isFullscreen ? 'Exit Fullscreen' : 'Fullscreen' }}
+    </button>
+  </div>
+</div>

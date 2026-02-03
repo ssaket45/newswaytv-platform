@@ -1,0 +1,20 @@
+@use '../../styles/epaper-theme' as theme;
+
+.edition-selector {
+  display: grid;
+  gap: 6px;
+  color: theme.$ink;
+
+  label {
+    font-weight: 600;
+  }
+
+  select {
+    border: 1px solid theme.$border;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 1rem;
+    background: theme.$paper-card;
+    color: theme.$ink;
+  }
+}

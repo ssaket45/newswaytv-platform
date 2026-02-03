@@ -1,0 +1,48 @@
+<section class="viewer" *ngIf="!isLoading && pdfUrl; else emptyState">
+  <div class="viewer-header">
+    <p class="eyebrow">Epaper Viewer</p>
+    <h1>{{ epaper?.title }}</h1>
+    <p class="meta">{{ epaper?.date }}</p>
+  </div>
+
+  <app-pdf-toolbar
+    [pageNumber]="pageNumber"
+    [pageCount]="pageCount"
+    [zoom]="zoom"
+    [minZoom]="minZoom"
+    [maxZoom]="maxZoom"
+    [isFullscreen]="isFullscreen"
+    (nextPage)="nextPage()"
+    (prevPage)="prevPage()"
+    (zoomIn)="zoomIn()"
+    (zoomOut)="zoomOut()"
+    (download)="downloadPdf()"
+    (toggleFullscreen)="toggleFullscreen()"
+  ></app-pdf-toolbar>
+
+  <app-pdf-canvas-viewer
+    [pdfUrl]="pdfUrl"
+    [pageNumber]="pageNumber"
+    [scale]="zoom"
+    (pageCountChange)="onPageCountChange($event)"
+  ></app-pdf-canvas-viewer>
+
+  <div class="page-strip" *ngIf="pageCount > 1">
+    <button
+      type="button"
+      class="page-chip"
+      *ngFor="let page of pageNumbers; trackBy: trackByPage"
+      [class.active]="page === pageNumber"
+      (click)="setPage(page)"
+    >
+      {{ page }}
+    </button>
+  </div>
+</section>
+
+<ng-template #emptyState>
+  <div class="viewer-empty">
+    <p *ngIf="isLoading">Loading viewer...</p>
+    <p *ngIf="!isLoading">No epaper found for this link.</p>
+  </div>
+</ng-template>

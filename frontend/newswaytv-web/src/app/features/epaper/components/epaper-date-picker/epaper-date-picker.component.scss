@@ -1,0 +1,21 @@
+@use '../../styles/epaper-theme' as theme;
+
+.date-picker {
+  display: grid;
+  gap: 6px;
+  font-size: 0.95rem;
+  color: theme.$ink;
+
+  label {
+    font-weight: 600;
+  }
+
+  input {
+    border: 1px solid theme.$border;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 1rem;
+    background: theme.$paper-card;
+    color: theme.$ink;
+  }
+}

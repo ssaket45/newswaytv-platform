@@ -1,0 +1,19 @@
+@use '../../styles/epaper-theme' as theme;
+
+.canvas-shell {
+  display: flex;
+  justify-content: center;
+  padding: 20px 16px 40px;
+  background: theme.$paper-bg;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+canvas {
+  width: 100%;
+  max-width: 980px;
+  height: auto;
+  background: theme.$paper-card;
+  border: 1px solid theme.$border;
+  box-shadow: theme.$shadow;
+}

@@ -1,0 +1,9 @@
+<div class="date-picker">
+  <label for="epaper-date">Select date</label>
+  <input
+    id="epaper-date"
+    type="date"
+    [ngModel]="selectedDate"
+    (ngModelChange)="onDateChange($event)"
+  />
+</div>

@@ -19,6 +19,11 @@ export const routes: Routes = [
     title: 'Home'
   },
   {
+    path: 'epaper',
+    loadChildren: () =>
+      import('./features/epaper/epaper.module').then((m) => m.EpaperModule)
+  },
+  {
     path: 'category/:slug',
     component: Category,
     title: 'Category'

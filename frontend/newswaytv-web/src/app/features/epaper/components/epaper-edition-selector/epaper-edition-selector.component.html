@@ -1,0 +1,13 @@
+<div class="edition-selector">
+  <label for="epaper-edition">Edition</label>
+  <select
+    id="epaper-edition"
+    [ngModel]="selectedEditionId"
+    (ngModelChange)="onEditionChange($event)"
+  >
+    <option value="">All editions</option>
+    <option *ngFor="let edition of editions" [value]="edition.id">
+      {{ edition.name }}
+    </option>
+  </select>
+</div>

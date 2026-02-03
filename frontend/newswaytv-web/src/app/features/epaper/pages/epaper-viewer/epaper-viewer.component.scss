@@ -1,0 +1,68 @@
+@use '../../styles/epaper-theme' as theme;
+
+.viewer {
+  min-height: 100vh;
+  background: theme.$paper-bg;
+  color: theme.$ink;
+}
+
+.viewer-header {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 28px 20px 16px;
+
+  h1 {
+    margin: 4px 0 6px;
+    font-size: clamp(1.8rem, 2.5vw, 2.6rem);
+  }
+}
+
+.eyebrow {
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  color: theme.$muted-ink;
+}
+
+.meta {
+  color: theme.$muted-ink;
+}
+
+.viewer-empty {
+  min-height: 60vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  color: theme.$muted-ink;
+  background: theme.$paper-bg;
+}
+
+.page-strip {
+  position: sticky;
+  bottom: 0;
+  z-index: 9;
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 10px 16px 16px;
+  background: theme.$toolbar-bg;
+  border-top: 1px solid theme.$border;
+}
+
+.page-chip {
+  border: 1px solid theme.$border;
+  background: theme.$paper-card;
+  color: theme.$ink;
+  border-radius: 999px;
+  padding: 6px 12px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.page-chip.active {
+  background: theme.$accent;
+  border-color: theme.$accent;
+  color: #ffffff;
+}

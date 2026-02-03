@@ -1,0 +1,44 @@
+<section class="epaper-home">
+  <div class="hero">
+    <div>
+      <p class="eyebrow">Epaper</p>
+      <h1>Daily edition, ready to read.</h1>
+      <p class="subtext">Pick a date and edition to browse the latest e-paper PDFs.</p>
+    </div>
+    <div class="filters">
+      <app-epaper-date-picker
+        [selectedDate]="selectedDate"
+        (selectedDateChange)="onDateChange($event)"
+      ></app-epaper-date-picker>
+      <app-epaper-edition-selector
+        [editions]="editions"
+        [selectedEditionId]="selectedEditionId"
+        (editionChange)="onEditionChange($event)"
+      ></app-epaper-edition-selector>
+      <a class="admin-link" routerLink="/admin/dashboard">Go to Epaper Admin</a>
+    </div>
+  </div>
+
+  <div class="results">
+    <div *ngIf="isLoading" class="loading">Loading epapers...</div>
+    <div *ngIf="!isLoading && epapers.length === 0" class="empty-state">
+      No epapers found for the selected date.
+    </div>
+
+    <div class="epaper-grid">
+      <article *ngFor="let epaper of epapers" class="epaper-card">
+        <div class="thumb" *ngIf="epaper.thumbnailUrl; else fallback">
+          <img [src]="epaper.thumbnailUrl" [alt]="epaper.title" />
+        </div>
+        <ng-template #fallback>
+          <div class="thumb fallback">PDF</div>
+        </ng-template>
+        <div class="card-body">
+          <h3>{{ epaper.title }}</h3>
+          <p>{{ epaper.date }}</p>
+          <button type="button" (click)="openEpaper(epaper)">Open Viewer</button>
+        </div>
+      </article>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,15 @@
+$paper-bg: #f7f4ee;
+$paper-card: #ffffff;
+$ink: #222222;
+$muted-ink: #5a5a5a;
+$accent: #8a1c1c;
+$border: #e2ddd3;
+$toolbar-bg: #fefdfb;
+$shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+
+@mixin paper-card {
+  background: $paper-card;
+  border: 1px solid $border;
+  box-shadow: $shadow;
+  border-radius: 10px;
+}

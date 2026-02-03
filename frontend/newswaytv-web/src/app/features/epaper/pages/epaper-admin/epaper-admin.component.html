@@ -1,0 +1,49 @@
+<section class="epaper-admin">
+  <div class="header">
+    <p class="eyebrow">Admin</p>
+    <h1>Upload Epaper</h1>
+    <p class="subtext">Add a PDF for a specific date and zone.</p>
+  </div>
+
+  <form class="form" (ngSubmit)="submit()">
+    <div class="grid">
+      <label>
+        Title
+        <input type="text" [(ngModel)]="form.title" name="title" required />
+      </label>
+      <label>
+        Date
+        <input type="date" [(ngModel)]="form.date" name="date" required />
+      </label>
+      <label>
+        Zone / Edition
+        <select [(ngModel)]="form.editionId" name="editionId" required>
+          <option *ngFor="let edition of editions" [value]="edition.id">
+            {{ edition.name }}
+          </option>
+        </select>
+      </label>
+      <label>
+        Upload PDF
+        <input type="file" accept="application/pdf" (change)="onFileSelected($event)" />
+      </label>
+      <label>
+        PDF URL
+        <input type="url" [(ngModel)]="form.pdfUrl" name="pdfUrl" required />
+      </label>
+      <label>
+        Thumbnail URL
+        <input type="url" [(ngModel)]="form.thumbnailUrl" name="thumbnailUrl" />
+      </label>
+    </div>
+
+    <div class="actions">
+      <button type="submit" [disabled]="isSaving">
+        {{ isSaving ? 'Saving...' : 'Save Epaper' }}
+      </button>
+      <span class="status" *ngIf="uploadProgress">{{ uploadProgress }}</span>
+      <span class="error" *ngIf="errorMessage">{{ errorMessage }}</span>
+      <span class="success" *ngIf="successMessage">{{ successMessage }}</span>
+    </div>
+  </form>
+</section>
