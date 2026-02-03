@@ -6,14 +6,15 @@ const categoriesRouter = require('./routes/categories');
 const articlesRouter = require('./routes/articles');
 const epaperRouter = require('./routes/epaper');
 const { connectToDatabase } = require('./db');
-const { uploadsDir } = require('./uploads');
 
 dotenv.config();
 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use('/uploads', express.static(uploadsDir));
+if (!process.env.R2_PUBLIC_BASE_URL) {
+  app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+}
 
 app.use('/api/categories', categoriesRouter);
 app.use('/api/articles', articlesRouter);

@@ -1,5 +1,8 @@
+const path = require('path');
+const fs = require('fs');
 const Epaper = require('../models/Epaper');
 const Edition = require('../models/Edition');
+const { uploadToR2 } = require('../r2');
 
 const defaultEditions = [
   { id: 'mumbai', name: 'Mumbai', slug: 'mumbai' },
@@ -32,7 +35,11 @@ exports.getEpapers = async (req, res) => {
     const query = {};
 
     if (date) {
-      query.date = date;
+      const dateStr = String(date);
+      const monthPrefix = dateStr.slice(0, 7);
+      const start = `${monthPrefix}-01`;
+      const end = dateStr;
+      query.date = { $gte: start, $lte: end };
     }
     if (editionId) {
       query.editionId = editionId;
@@ -136,9 +143,34 @@ exports.uploadPdf = async (req, res) => {
       return;
     }
 
+    const originalName = req.file.originalname || 'epaper.pdf';
+    const safeName = originalName.replace(/[^a-zA-Z0-9._-]/g, '_');
+    const key = `epaper/${Date.now()}_${safeName}`;
+
+    const r2Url = await uploadToR2({
+      key,
+      body: req.file.buffer,
+      contentType: req.file.mimetype
+    });
+
+    if (r2Url) {
+      console.log('PDF uploaded to R2:', r2Url);
+      res.status(201).json({ pdfUrl: r2Url });
+      return;
+    }
+
+    // Fallback: local disk (dev only)
+    const uploadsDir = path.join(__dirname, '..', 'uploads');
+    if (!fs.existsSync(uploadsDir)) {
+      fs.mkdirSync(uploadsDir, { recursive: true });
+    }
+    const filename = `${Date.now()}_${safeName}`;
+    const filePath = path.join(uploadsDir, filename);
+    fs.writeFileSync(filePath, req.file.buffer);
+
     const baseUrl = process.env.UPLOADS_PUBLIC_BASE_URL || `${req.protocol}://${req.get('host')}`;
-    const pdfUrl = `${baseUrl}/uploads/${req.file.filename}`;
-    console.log('PDF uploaded:', req.file.originalname, '->', pdfUrl);
+    const pdfUrl = `${baseUrl.replace(/\/$/, '')}/uploads/${filename}`;
+    console.log('PDF uploaded locally:', pdfUrl);
     res.status(201).json({ pdfUrl });
   } catch (error) {
     console.error('Failed to upload PDF', error);

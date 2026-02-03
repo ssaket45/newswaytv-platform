@@ -86,11 +86,15 @@ export class EpaperService {
 
     return of(this.epapers).pipe(
       delay(200),
-      map((items) =>
-        items.filter((item) =>
-          item.date === date && (!editionId || item.editionId === editionId)
-        )
-      )
+      map((items) => {
+        const monthPrefix = date.slice(0, 7);
+        return items.filter((item) => {
+          if (item.date < `${monthPrefix}-01` || item.date > date) {
+            return false;
+          }
+          return !editionId || item.editionId === editionId;
+        });
+      })
     );
   }
 
