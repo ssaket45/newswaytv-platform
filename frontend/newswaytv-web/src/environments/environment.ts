@@ -4,4 +4,5 @@ export const environment = {
     ? 'http://localhost:3000/api'
     : 'https://YOUR-RENDER-URL/api',
   storageMode: 'api'
+  
 };
