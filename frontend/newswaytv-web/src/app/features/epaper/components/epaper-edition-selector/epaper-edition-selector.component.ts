@@ -10,12 +10,12 @@ import { Edition } from '../../models/edition.model';
 })
 export class EpaperEditionSelectorComponent {
   @Input() editions: Edition[] = [];
-  @Input() selectedEditionId: string | null = null;
-  @Output() editionChange = new EventEmitter<string | null>();
+  @Input() selectedEditionId: string = '';
+  @Output() editionChange = new EventEmitter<string>();
 
   onEditionChange(value: string): void {
-    this.selectedEditionId = value || null;
-    this.editionChange.emit(this.selectedEditionId);
+    this.selectedEditionId = value;
+    this.editionChange.emit(value);
   }
 }
 

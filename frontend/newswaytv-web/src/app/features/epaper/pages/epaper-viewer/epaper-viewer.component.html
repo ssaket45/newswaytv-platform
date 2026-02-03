@@ -3,9 +3,13 @@
     <p class="eyebrow">Epaper Viewer</p>
     <h1>{{ epaper?.title }}</h1>
     <p class="meta">{{ epaper?.date }}</p>
+    <!-- <a class="drive-link" href="https://drive.google.com/drive/u/0/folders/1Z-ytveQyLVvV8LQCg98VNSU5jKq9fzzl" target="_blank" rel="noopener">
+      Open Google Drive Folder
+    </a> -->
   </div>
 
   <app-pdf-toolbar
+    *ngIf="!drivePreviewUrl"
     [pageNumber]="pageNumber"
     [pageCount]="pageCount"
     [zoom]="zoom"
@@ -21,13 +25,22 @@
   ></app-pdf-toolbar>
 
   <app-pdf-canvas-viewer
+    *ngIf="!drivePreviewUrl"
     [pdfUrl]="pdfUrl"
     [pageNumber]="pageNumber"
     [scale]="zoom"
     (pageCountChange)="onPageCountChange($event)"
   ></app-pdf-canvas-viewer>
 
-  <div class="page-strip" *ngIf="pageCount > 1">
+  <div class="drive-viewer" *ngIf="drivePreviewSafeUrl">
+    <iframe
+      [src]="drivePreviewSafeUrl"
+      title="Google Drive PDF Viewer"
+      allow="autoplay"
+    ></iframe>
+  </div>
+
+  <div class="page-strip" *ngIf="pageCount > 1 && !drivePreviewUrl">
     <button
       type="button"
       class="page-chip"

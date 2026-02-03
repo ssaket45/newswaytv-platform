@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 import { Epaper } from '../../models/epaper.model';
 import { EpaperService } from '../../services/epaper.service';
@@ -16,6 +17,8 @@ import { clamp } from '../../utils/pdf-utils';
 export class EpaperViewerComponent implements OnInit {
   epaper: Epaper | null = null;
   pdfUrl = '';
+  drivePreviewUrl = '';
+  drivePreviewSafeUrl?: SafeResourceUrl;
   pageNumber = 1;
   pageCount = 1;
   zoom = 1;
@@ -29,7 +32,8 @@ export class EpaperViewerComponent implements OnInit {
     private route: ActivatedRoute,
     private epaperService: EpaperService,
     @Inject(PLATFORM_ID) private platformId: Object,
-    private cdr: ChangeDetectorRef
+    private cdr: ChangeDetectorRef,
+    private sanitizer: DomSanitizer
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -47,6 +51,10 @@ export class EpaperViewerComponent implements OnInit {
       this.epaperService.getEpaperById(id).subscribe((epaper) => {
         this.epaper = epaper;
         this.pdfUrl = epaper?.pdfUrl ?? '';
+        this.drivePreviewUrl = this.getDrivePreviewUrl(this.pdfUrl);
+        this.drivePreviewSafeUrl = this.drivePreviewUrl
+          ? this.sanitizer.bypassSecurityTrustResourceUrl(this.drivePreviewUrl)
+          : undefined;
         this.isLoading = false;
         this.cdr.detectChanges();
       });
@@ -113,6 +121,24 @@ export class EpaperViewerComponent implements OnInit {
 
     document.exitFullscreen?.();
     this.isFullscreen = false;
+  }
+
+  private getDrivePreviewUrl(url: string): string {
+    if (!url || !url.includes('drive.google.com')) {
+      return '';
+    }
+
+    const fileIdMatch = url.match(/\/file\/d\/([^/]+)/);
+    if (fileIdMatch && fileIdMatch[1]) {
+      return `https://drive.google.com/file/d/${fileIdMatch[1]}/preview`;
+    }
+
+    const idMatch = url.match(/[?&]id=([^&]+)/);
+    if (idMatch && idMatch[1]) {
+      return `https://drive.google.com/file/d/${idMatch[1]}/preview`;
+    }
+
+    return '';
   }
 }
 

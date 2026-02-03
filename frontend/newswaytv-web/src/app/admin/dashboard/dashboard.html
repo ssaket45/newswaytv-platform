@@ -3,6 +3,9 @@
     <p class="eyebrow">Admin</p>
     <h1>Upload Epaper</h1>
     <p class="subtext">Add a PDF for a specific date and zone.</p>
+    <!-- <a class="drive-link" href="https://drive.google.com/drive/u/0/folders/1Z-ytveQyLVvV8LQCg98VNSU5jKq9fzzl" target="_blank" rel="noopener">
+      Open Google Drive Folder
+    </a> -->
   </div>
 
   <form class="form" (ngSubmit)="submit()">
@@ -24,7 +27,11 @@
           </option>
         </select>
       </label>
-      <label>
+      <label class="toggle">
+        <input type="checkbox" [(ngModel)]="useManualUrl" name="useManualUrl" />
+        Use manual PDF URL (no upload)
+      </label>
+      <label *ngIf="!useManualUrl">
         Upload PDF
         <input type="file" accept="application/pdf" (change)="onFileSelected($event)" />
       </label>
@@ -32,6 +39,22 @@
         PDF URL
         <input type="url" [(ngModel)]="form.pdfUrl" name="pdfUrl" required />
       </label>
+      <label *ngIf="useManualUrl">
+        Paste Google Drive Link
+        <input
+          type="url"
+          placeholder="https://drive.google.com/file/d/FILE_ID/view"
+          (change)="onDriveLinkPaste($any($event.target).value)"
+        />
+      </label>
+      <!-- <div class="drive-hint">
+        Paste a file link from the Drive folder above.
+      </div> -->
+      <div class="url-test" *ngIf="useManualUrl">
+        <button type="button" class="secondary" (click)="testPdfUrl()" [disabled]="isTestingUrl">
+          {{ isTestingUrl ? 'Testing...' : 'Test URL' }}
+        </button>
+      </div>
       <label>
         Thumbnail URL
         <input type="url" [(ngModel)]="form.thumbnailUrl" name="thumbnailUrl" />
@@ -40,7 +63,10 @@
 
     <div class="actions">
       <button type="submit" [disabled]="isSaving || isUploading || !form.pdfUrl">
-        {{ isSaving ? 'Saving...' : (isUploading ? 'Uploading...' : 'Save Epaper') }}
+        {{ isSaving ? 'Saving...' : (isUploading ? 'Uploading...' : (editingId ? 'Update Epaper' : 'Save Epaper')) }}
+      </button>
+      <button type="button" class="secondary" *ngIf="editingId" (click)="cancelEdit()">
+        Cancel
       </button>
       <span class="status" *ngIf="uploadProgress">{{ uploadProgress }}</span>
       <span class="error" *ngIf="errorMessage">{{ errorMessage }}</span>
@@ -60,8 +86,10 @@
           <p>{{ epaper.date }} · {{ epaper.editionId }}</p>
         </div>
         <div class="list-actions">
-          <a [href]="epaper.pdfUrl" target="_blank" rel="noopener">View PDF</a>
-          <a [routerLink]="['/epaper/view', epaper.id]">Open Viewer</a>
+          <a [href]="epaper.pdfUrl" target="_blank" rel="noopener">PDF</a>
+          <a [routerLink]="['/epaper/view', epaper.id]">View</a>
+          <button type="button" class="secondary" (click)="editEpaper(epaper)">Edit</button>
+          <button type="button" class="danger" (click)="deleteEpaper(epaper)">Delete</button>
         </div>
       </article>
     </div>
