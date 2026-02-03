@@ -5,6 +5,8 @@ const {
   getEpapers,
   getEpaperById,
   createEpaper,
+  updateEpaper,
+  deleteEpaper,
   uploadPdf
 } = require('../controllers/epaperController');
 const { upload } = require('../uploads');
@@ -23,5 +25,7 @@ router.post('/upload', (req, res, next) => {
   });
 }, uploadPdf);
 router.post('/', createEpaper);
+router.put('/:id', updateEpaper);
+router.delete('/:id', deleteEpaper);
 
 module.exports = router;

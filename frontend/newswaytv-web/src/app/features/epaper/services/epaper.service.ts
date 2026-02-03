@@ -130,6 +130,34 @@ export class EpaperService {
     return of(epaper).pipe(delay(300));
   }
 
+  updateEpaper(id: string, payload: Omit<Epaper, 'id' | 'pages'>): Observable<Epaper> {
+    if (this.storageMode === 'api') {
+      return this.http.put<Epaper>(`${this.baseUrl}/epaper/${id}`, payload);
+    }
+
+    const index = this.epapers.findIndex((item) => item.id === id);
+    if (index >= 0) {
+      this.epapers[index] = { ...this.epapers[index], ...payload };
+      this.persistLocalStorage();
+      return of(this.epapers[index]).pipe(delay(200));
+    }
+    return of({
+      ...payload,
+      id,
+      pages: 0
+    }).pipe(delay(200));
+  }
+
+  deleteEpaper(id: string): Observable<{ message: string }> {
+    if (this.storageMode === 'api') {
+      return this.http.delete<{ message: string }>(`${this.baseUrl}/epaper/${id}`);
+    }
+
+    this.epapers = this.epapers.filter((item) => item.id !== id);
+    this.persistLocalStorage();
+    return of({ message: 'Epaper deleted' }).pipe(delay(150));
+  }
+
   uploadPdf(file: File): Observable<{ pdfUrl: string }> {
     const formData = new FormData();
     formData.append('file', file);

@@ -3,6 +3,7 @@ const fs = require('fs');
 const Epaper = require('../models/Epaper');
 const Edition = require('../models/Edition');
 const { uploadToR2 } = require('../r2');
+const { uploadToFirebase } = require('../firebase');
 
 const defaultEditions = [
   { id: 'mumbai', name: 'Mumbai', slug: 'mumbai' },
@@ -125,6 +126,64 @@ exports.createEpaper = async (req, res) => {
   }
 };
 
+exports.updateEpaper = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { title, date, editionId, pdfUrl, thumbnailUrl } = req.body;
+    const normalizedDate = normalizeDate(date);
+
+    if (!title || !normalizedDate || !editionId || !pdfUrl) {
+      res.status(400).json({ message: 'Missing required fields' });
+      return;
+    }
+
+    const epaper = await Epaper.findByIdAndUpdate(
+      id,
+      {
+        title,
+        date: normalizedDate,
+        editionId,
+        pdfUrl,
+        thumbnailUrl: thumbnailUrl || ''
+      },
+      { new: true }
+    );
+
+    if (!epaper) {
+      res.status(404).json({ message: 'Epaper not found' });
+      return;
+    }
+
+    res.json({
+      id: epaper._id.toString(),
+      title: epaper.title,
+      date: epaper.date,
+      editionId: epaper.editionId,
+      pdfUrl: epaper.pdfUrl,
+      thumbnailUrl: epaper.thumbnailUrl,
+      pages: epaper.pages
+    });
+  } catch (error) {
+    console.error('Failed to update epaper', error);
+    res.status(500).json({ message: 'Failed to update epaper' });
+  }
+};
+
+exports.deleteEpaper = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const epaper = await Epaper.findByIdAndDelete(id);
+    if (!epaper) {
+      res.status(404).json({ message: 'Epaper not found' });
+      return;
+    }
+    res.json({ message: 'Epaper deleted' });
+  } catch (error) {
+    console.error('Failed to delete epaper', error);
+    res.status(500).json({ message: 'Failed to delete epaper' });
+  }
+};
+
 function normalizeDate(value) {
   if (!value || typeof value !== 'string') {
     return '';
@@ -146,6 +205,18 @@ exports.uploadPdf = async (req, res) => {
     const originalName = req.file.originalname || 'epaper.pdf';
     const safeName = originalName.replace(/[^a-zA-Z0-9._-]/g, '_');
     const key = `epaper/${Date.now()}_${safeName}`;
+
+    const firebaseUrl = await uploadToFirebase({
+      key,
+      body: req.file.buffer,
+      contentType: req.file.mimetype
+    });
+
+    if (firebaseUrl) {
+      console.log('PDF uploaded to Firebase Storage:', firebaseUrl);
+      res.status(201).json({ pdfUrl: firebaseUrl });
+      return;
+    }
 
     const r2Url = await uploadToR2({
       key,

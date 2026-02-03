@@ -15,7 +15,7 @@
         [selectedEditionId]="selectedEditionId"
         (editionChange)="onEditionChange($event)"
       ></app-epaper-edition-selector>
-      <a class="admin-link" routerLink="/admin/dashboard">Go to Epaper Admin</a>
+      <!-- <a class="admin-link" routerLink="/admin/dashboard">Go to Epaper Admin</a> -->
     </div>
   </div>
 
@@ -27,8 +27,8 @@
 
     <div class="epaper-grid">
       <article *ngFor="let epaper of epapers" class="epaper-card">
-        <div class="thumb" *ngIf="epaper.thumbnailUrl; else fallback">
-          <img [src]="epaper.thumbnailUrl" [alt]="epaper.title" />
+        <div class="thumb" *ngIf="getThumbnail(epaper); else fallback">
+          <img [src]="getThumbnail(epaper)!" [alt]="epaper.title" />
         </div>
         <ng-template #fallback>
           <div class="thumb fallback">PDF</div>
