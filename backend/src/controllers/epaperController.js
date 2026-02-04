@@ -195,14 +195,18 @@ exports.downloadEpaper = async (req, res) => {
     }
 
     const response = await fetch(epaper.pdfUrl);
-    if (!response.ok || !response.body) {
+    if (!response.ok) {
       res.status(502).json({ message: 'Failed to fetch PDF' });
       return;
     }
 
+    const arrayBuffer = await response.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
     res.setHeader('Content-Type', response.headers.get('content-type') || 'application/pdf');
+    res.setHeader('Content-Length', buffer.length);
     res.setHeader('Content-Disposition', `attachment; filename=\"${epaper.title || 'epaper'}.pdf\"`);
-    response.body.pipe(res);
+    res.status(200).send(buffer);
   } catch (error) {
     console.error('Failed to download epaper', error);
     res.status(500).json({ message: 'Failed to download epaper' });

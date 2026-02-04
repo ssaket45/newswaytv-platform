@@ -3,6 +3,10 @@
     <p class="eyebrow">Epaper Viewer</p>
     <h1>{{ epaper?.title }}</h1>
     <p class="meta">{{ epaper?.date }}</p>
+    <div class="viewer-actions">
+      <button type="button" class="download" (click)="downloadPdf()">Download PDF</button>
+      <a class="direct" [href]="pdfUrl" target="_blank" rel="noopener">Direct Link</a>
+    </div>
     <!-- <a class="drive-link" href="https://drive.google.com/drive/u/0/folders/1Z-ytveQyLVvV8LQCg98VNSU5jKq9fzzl" target="_blank" rel="noopener">
       Open Google Drive Folder
     </a> -->

@@ -17,6 +17,34 @@
   }
 }
 
+.viewer-actions {
+  margin-top: 10px;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.viewer-actions .download {
+  border: none;
+  background: theme.$accent;
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.viewer-actions .direct {
+  text-decoration: none;
+  background: #222222;
+  color: #ffffff;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+}
+
 .drive-link {
   display: inline-flex;
   margin-top: 8px;

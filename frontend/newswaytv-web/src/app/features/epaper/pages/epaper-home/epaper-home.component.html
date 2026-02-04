@@ -39,6 +39,7 @@
           <div class="card-actions">
             <button type="button" (click)="openEpaper(epaper)">Open Viewer</button>
             <button type="button" class="download" (click)="downloadEpaper(epaper)">Download PDF</button>
+            <a class="direct" [href]="epaper.pdfUrl" target="_blank" rel="noopener">Direct Link</a>
           </div>
         </div>
       </article>
