@@ -24,12 +24,20 @@ app.use('/api/epaper', epaperRouter);
 
 const PORT = process.env.PORT || 3000;
 
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('Unhandled Rejection:', reason);
+});
+
 connectToDatabase()
   .then(() => {
+    // Run cleanup after DB is connected and models are loaded
+    const { cleanupOldEpapers } = require('./controllers/epaperController');
+    cleanupOldEpapers().catch(console.error);
     app.listen(PORT, () => {
       console.log(`Server running on port ${PORT}`);
     });
   })
-  .catch(() => {
+  .catch((err) => {
+    console.error('Startup error:', err);
     process.exit(1);
   });

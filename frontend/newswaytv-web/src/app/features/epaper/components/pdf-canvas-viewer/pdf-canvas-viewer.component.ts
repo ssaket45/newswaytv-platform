@@ -71,23 +71,33 @@ export class PdfCanvasViewerComponent implements AfterViewInit, OnChanges, OnDes
 
   private async loadDocument(): Promise<void> {
     if (!this.pdfUrl || !this.isBrowser) {
+      console.warn('PDF URL is missing or not running in browser:', this.pdfUrl);
+      this.showError('PDF URL is missing or invalid.');
       return;
     }
 
     try {
+      console.log('Loading PDF from URL:', this.pdfUrl);
       this.pdfDoc = await this.pdfViewer.loadDocument(this.pdfUrl);
       if (this.destroyed || !this.pdfDoc) {
         return;
       }
       this.pageCountChange.emit(this.pdfDoc.numPages);
       await this.renderPage();
+      this.showError(''); // Clear error on success
     } catch (error) {
       console.error('Failed to load PDF document', error);
+      this.showError('Failed to load PDF document. Please check the file URL and network.');
     }
   }
 
+  errorMessage = '';
+  private showError(msg: string) {
+    this.errorMessage = msg;
+  }
+
   private async renderPage(): Promise<void> {
-    if (!this.pdfDoc) {
+    if (!this.pdfDoc || !this.canvasRef) {
       return;
     }
 

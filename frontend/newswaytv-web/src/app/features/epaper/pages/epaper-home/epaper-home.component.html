@@ -1,3 +1,15 @@
+<header class="epaper-header">
+  <div class="epaper-header-content">
+    <!-- <img src="/assets/epaper-logo.png" alt="Epaper Logo" class="epaper-logo" /> -->
+    <div class="epaper-heading-group">
+      <h1 class="epaper-heading">ई-पेपर</h1>
+      <a class="admin-btn" routerLink="/admin/epaper">Dashboard</a>
+      <a class="dashboard-btn" routerLink="/admin/dashboard">Epaper Admin</a>
+    </div>
+     <a class="home-btn" href="/" style="display:inline-block; padding: 10px; width: 100%;">Home</a>
+  </div>
+</header>
+
 <section class="epaper-home">
   <div class="hero">
     <div>
@@ -10,17 +22,19 @@
         [selectedDate]="selectedDate"
         (selectedDateChange)="onDateChange($event)"
       ></app-epaper-date-picker>
-      <app-epaper-edition-selector
-        [editions]="editions"
-        [selectedEditionId]="selectedEditionId"
-        (editionChange)="onEditionChange($event)"
-      ></app-epaper-edition-selector>
+      <ng-container *ngIf="editions.length > 0">
+        <app-epaper-edition-selector
+          [editions]="editions"
+          [selectedEditionId]="selectedEditionId"
+          (editionChange)="onEditionChange($event)"
+        ></app-epaper-edition-selector>
+      </ng-container>
       <!-- <a class="admin-link" routerLink="/admin/dashboard">Go to Epaper Admin</a> -->
     </div>
   </div>
 
   <div class="results">
-    <div *ngIf="isLoading" class="loading">Loading epapers...</div>
+    <app-epaper-loader *ngIf="isLoading"></app-epaper-loader>
     <div *ngIf="!isLoading && epapers.length === 0" class="empty-state">
       No epapers found for the selected date.
     </div>
@@ -40,9 +54,51 @@
             <button type="button" (click)="openEpaper(epaper)">Open Viewer</button>
             <button type="button" class="download" (click)="downloadEpaper(epaper)">Download PDF</button>
             <a class="direct" [href]="epaper.pdfUrl" target="_blank" rel="noopener">Direct Link</a>
+            <button type="button" class="popup" (click)="openPopup(epaper)">View in Popup</button>
           </div>
         </div>
       </article>
     </div>
+
+    <div class="pdf-list-viewer">
+      <h2>All PDFs (Viewer)</h2>
+      <div class="pdf-list-grid">
+        <div class="pdf-list-item" *ngFor="let epaper of epapers">
+          <div class="pdf-list-title">{{ epaper.title }} ({{ epaper.date }})</div>
+          <button type="button" class="popup" (click)="openPopup(epaper)">View in Popup</button>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
+
+<div class="pdf-popup" *ngIf="popupOpen">
+  <div class="pdf-popup__backdrop" (click)="closePopup()"></div>
+  <div class="pdf-popup__content">
+    <button class="pdf-popup__close" type="button" (click)="closePopup()">Close</button>
+
+    <ng-container *ngIf="!popupDrivePreviewUrl; else driveBlocked">
+      <app-pdf-toolbar
+        [pageNumber]="popupPageNumber"
+        [pageCount]="popupPageCount"
+        [zoom]="popupZoom"
+        [minZoom]="popupMinZoom"
+        [maxZoom]="popupMaxZoom"
+        (nextPage)="popupNextPage()"
+        (prevPage)="popupPrevPage()"
+        (zoomIn)="popupZoomIn()"
+        (zoomOut)="popupZoomOut()"
+      ></app-pdf-toolbar>
+
+      <app-pdf-canvas-viewer
+        [pdfUrl]="popupPdfUrl"
+        [pageNumber]="popupPageNumber"
+        [scale]="popupZoom"
+        (pageCountChange)="onPopupPageCountChange($event)"
+      ></app-pdf-canvas-viewer>
+    </ng-container>
+    <ng-template #driveBlocked>
+      <div class="pdf-error">Google Drive PDFs cannot be viewed in the popup. Please use Direct Link.</div>
+    </ng-template>
+  </div>
+</div>

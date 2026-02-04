@@ -1,4 +1,3 @@
-
 /* Global UI Consistency & Polish */
 html {
 	box-sizing: border-box;
@@ -19,7 +18,7 @@ body {
 }
 
 main, .main-content, .category-page, .article-page, .about-page, .homepage {
-	max-width: 700px;
+	/* max-width: 700px; */
 	margin: 0 auto;
 	padding: 1.2rem 1rem 2.5rem 1rem;
 	background: transparent;
@@ -52,6 +51,31 @@ a {
 a:hover, a:focus {
 	color: #08406b;
 	text-decoration: underline;
+}
+
+/* Card title styles for readability */
+.card-title, .epaper-card-title, .grid-card-title, .dashboard-card-title, .epaper-meta-title, .epaper-edition-title {
+  color: #111 !important;
+  font-weight: 700;
+}
+
+/* Force card title color for all possible selectors */
+.card-title, .epaper-card-title, .grid-card-title, .dashboard-card-title, .epaper-title, .edition-title, .card-header, .card h2, .card h3, .epaper-card h2, .epaper-card h3 {
+  color: #111 !important;
+  font-weight: 700 !important;
+}
+
+/* Ensure card content is visible */
+.epaper-card, .grid-card, .dashboard-card {
+  background: #fff;
+  color: #232323;
+}
+
+/* Make meta and edition info readable */
+.epaper-meta, .epaper-edition, .epaper-date, .epaper-location {
+  color: #222 !important;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
 @media (max-width: 700px) {

@@ -1,71 +1,308 @@
 @use '../../styles/epaper-theme' as theme;
-
-.epaper-home {
-  min-height: 100vh;
-  background: theme.$paper-bg;
-  color: theme.$ink;
-  padding: 32px 20px 60px;
-}
-
-.hero {
-  display: grid;
-  gap: 24px;
-  max-width: 1100px;
-  margin: 0 auto 30px;
-  align-items: center;
-}
-
-.eyebrow {
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 0.75rem;
-  color: theme.$muted-ink;
-  margin-bottom: 8px;
-}
-
-h1 {
-  font-size: clamp(2rem, 3vw, 3rem);
-  margin: 0 0 10px;
-}
-
-.subtext {
-  color: theme.$muted-ink;
-  max-width: 520px;
-}
-
-.filters {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 16px;
-}
-
-.admin-link {
-  align-self: end;
-  text-decoration: none;
-  background: theme.$ink;
-  color: #ffffff;
-  padding: 12px 16px;
+.dashboard-btn {
+  background: #222;
+  color: #90caf9;
+  font-weight: 700;
+  border: none;
   border-radius: 8px;
-  font-weight: 600;
-  text-align: center;
+  padding: 10px 22px;
+  font-size: 1.1rem;
+  text-decoration: none;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  transition: background 0.2s;
+}
+.dashboard-btn:hover {
+  background: #444;
+}
+.epaper-heading-group {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+.admin-btn {
+  background: #222;
+  color: #ffe066;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 1.1rem;
+  text-decoration: none;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  transition: background 0.2s;
+}
+.admin-btn:hover {
+  background: #444;
+}
+.home-btn {
+  margin-left: auto;
+  background: #ffe066;
+  color: #222;
+  font-weight: 700;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 1.1rem;
+  text-decoration: none;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.08);
+  transition: background 0.2s;
+}
+.home-btn:hover {
+  background: #fff3b0;
+}
+// Epaper page header styles
+// Responsive header for desktop and mobile
+.epaper-header {
+  width: 100%;
+  background: #181818;
+  border-bottom: 2px solid #222;
+  padding: 32px 0 18px 0;
+  margin-bottom: 0;
 }
 
-.results {
-  max-width: 1100px;
+@media (max-width: 700px) {
+  .epaper-header {
+    padding: 12px 0 8px 0;
+  }
+  .epaper-heading {
+    font-size: 1.3rem;
+    margin: 0;
+  }
+  .epaper-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+}
+.epaper-header-content {
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+@media (max-width: 700px) {
+  .epaper-header-content {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 12px;
+    padding: 0 8px;
+  }
+  .epaper-heading-group {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+  .home-btn {
+    margin-left: 0;
+    width: 100%;
+    box-sizing: border-box;
+  }
+}
+.epaper-header-content {
+  max-width: 1200px;
   margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.epaper-logo {
+  width: 64px;
+  height: 64px;
+  object-fit: contain;
+  margin-right: 18px;
+}
+.epaper-heading {
+  font-size: 2.4rem;
+  font-weight: 800;
+  color: #ffe066;
+  margin: 0;
+  letter-spacing: 0.04em;
+}
+.epaper-subheading {
+  font-size: 1.1rem;
+  color: #bdbdbd;
+  margin: 6px 0 0 0;
+}
+.pdf-list-viewer {
+  margin: 32px auto 0;
+  max-width: 900px;
 }
 
-.loading,
-.empty-state {
-  padding: 18px 12px;
-  font-weight: 600;
-  color: theme.$muted-ink;
+.pdf-list-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
 }
+
+.pdf-list-item {
+  background: #f7f7f7;
+  border-radius: 8px;
+  padding: 18px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+}
+
+.pdf-list-title {
+  font-weight: 600;
+  color: #222;
+}
+
 
 .epaper-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+  margin: 32px auto 0;
+  max-width: 1200px;
+}
+
+@media (max-width: 900px) {
+  .epaper-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 600px) {
+  .epaper-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.epaper-card {
+  background: #181818;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: box-shadow 0.2s;
+  border: 1px solid #222;
+}
+
+.epaper-card:hover {
+  box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  border-color: #444;
+}
+
+.thumb {
+  height: 180px;
+  background: #ece6dc;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  color: theme.$muted-ink;
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-bottom: 1px solid #222;
+  }
+}
+
+.card-body {
+  padding: 18px 16px 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  h3 {
+    margin: 0 0 4px 0;
+    font-size: 1.15rem;
+    color: #fff;
+    font-weight: 700;
+  }
+  p {
+    margin: 0;
+    color: #bdbdbd;
+    font-size: 1rem;
+    font-weight: 500;
+  }
+
+  .card-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+}
+
+.pdf-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+}
+
+.pdf-popup__backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  z-index: 1;
+}
+
+.pdf-popup__content {
+  position: relative;
+  z-index: 2;
+  background: #fff;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.pdf-popup__close {
+  position: absolute;
+  top: 24px;
+  right: 32px;
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.4rem;
+  cursor: pointer;
+  z-index: 3;
+  opacity: 0.85;
+}
+
+app-pdf-toolbar {
+  margin: 0 auto;
+  width: 100%;
+  max-width: 1200px;
+  background: #f7f7f7;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+app-pdf-canvas-viewer {
+  flex: 1 1 auto;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #222;
+}
+
+
+.drive-viewer iframe {
+  width: 100vw;
+  height: 100vh;
+  border: none;
 }
 
 .epaper-card {

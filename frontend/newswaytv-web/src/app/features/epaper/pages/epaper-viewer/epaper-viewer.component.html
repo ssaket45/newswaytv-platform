@@ -1,5 +1,6 @@
 <section class="viewer" *ngIf="!isLoading && pdfUrl; else emptyState">
   <div class="viewer-header">
+    <button type="button" class="back-btn" (click)="goBack()">← Back</button>
     <p class="eyebrow">Epaper Viewer</p>
     <h1>{{ epaper?.title }}</h1>
     <p class="meta">{{ epaper?.date }}</p>
@@ -7,8 +8,8 @@
       <button type="button" class="download" (click)="downloadPdf()">Download PDF</button>
       <a class="direct" [href]="pdfUrl" target="_blank" rel="noopener">Direct Link</a>
     </div>
-    <!-- <a class="drive-link" href="https://drive.google.com/drive/u/0/folders/1Z-ytveQyLVvV8LQCg98VNSU5jKq9fzzl" target="_blank" rel="noopener">
-      Open Google Drive Folder
+    <!-- <a class="viewer-logo" routerLink="/" title="Home" style="position:absolute;left:24px;top:24px;z-index:10;">
+      <img src="/assets/logo.png" alt="Epaper Logo" style="height:48px;vertical-align:middle;" />
     </a> -->
   </div>
 

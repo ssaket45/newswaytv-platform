@@ -1,3 +1,18 @@
+// Automatically delete epapers older than 45 days
+const DAY_MS = 24 * 60 * 60 * 1000;
+const RETENTION_DAYS = 45;
+async function cleanupOldEpapers() {
+  const cutoff = new Date(Date.now() - RETENTION_DAYS * DAY_MS);
+  const oldEpapers = await Epaper.find({ date: { $lt: cutoff.toISOString().slice(0, 10) } });
+  for (const epaper of oldEpapers) {
+    // Optionally: delete file from storage (Firebase/R2) if needed
+    // For now, just remove DB record
+    await Epaper.deleteOne({ _id: epaper._id });
+    console.log('Deleted old epaper:', epaper.title, epaper.date);
+  }
+}
+exports.cleanupOldEpapers = cleanupOldEpapers;
+
 const path = require('path');
 const fs = require('fs');
 const fetch = (...args) => import('node-fetch').then(({ default: f }) => f(...args));

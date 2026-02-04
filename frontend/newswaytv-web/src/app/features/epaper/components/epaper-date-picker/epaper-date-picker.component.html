@@ -3,7 +3,7 @@
   <input
     id="epaper-date"
     type="date"
-    [ngModel]="selectedDate"
-    (ngModelChange)="onDateChange($event)"
+    [(ngModel)]="selectedDate"
+    (change)="onDateChange($event.target.value)"
   />
 </div>

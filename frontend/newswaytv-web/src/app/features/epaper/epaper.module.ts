@@ -11,6 +11,7 @@ import { PdfCanvasViewerComponent } from './components/pdf-canvas-viewer/pdf-can
 import { PdfToolbarComponent } from './components/pdf-toolbar/pdf-toolbar.component';
 import { EpaperDatePickerComponent } from './components/epaper-date-picker/epaper-date-picker.component';
 import { EpaperEditionSelectorComponent } from './components/epaper-edition-selector/epaper-edition-selector.component';
+import { EpaperLoaderComponent } from './components/epaper-loader.component';
 
 @NgModule({
   declarations: [
@@ -20,8 +21,9 @@ import { EpaperEditionSelectorComponent } from './components/epaper-edition-sele
     PdfCanvasViewerComponent,
     PdfToolbarComponent,
     EpaperDatePickerComponent,
-    EpaperEditionSelectorComponent
+    EpaperEditionSelectorComponent,
+    // EpaperLoaderComponent (standalone, imported below)
   ],
-  imports: [CommonModule, FormsModule, RouterModule, EpaperRoutingModule]
+  imports: [CommonModule, FormsModule, RouterModule, EpaperRoutingModule, EpaperLoaderComponent]
 })
 export class EpaperModule {}

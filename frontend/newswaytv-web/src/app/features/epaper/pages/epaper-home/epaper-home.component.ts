@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { isPlatformBrowser } from '@angular/common';
 import { PLATFORM_ID } from '@angular/core';
 import { Router } from '@angular/router';
@@ -22,13 +23,22 @@ export class EpaperHomeComponent implements OnInit {
   isLoading = false;
   thumbnailMap: Record<string, string> = {};
   private readonly isBrowser: boolean;
+  popupOpen = false;
+  popupPdfUrl = '';
+  popupDrivePreviewUrl: SafeResourceUrl | '' = '';
+  popupPageNumber = 1;
+  popupPageCount = 1;
+  popupZoom = 1;
+  readonly popupMinZoom = 0.6;
+  readonly popupMaxZoom = 2.5;
 
   constructor(
     private epaperService: EpaperService,
     private router: Router,
     private cdr: ChangeDetectorRef,
     private pdfViewer: PdfViewerService,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private sanitizer: DomSanitizer
   ) {
     this.isBrowser = isPlatformBrowser(this.platformId);
   }
@@ -51,6 +61,7 @@ export class EpaperHomeComponent implements OnInit {
   }
 
   openEpaper(epaper: Epaper): void {
+    console.log('Open Viewer button clicked for:', epaper);
     this.router.navigate(['/epaper/view', epaper.id]);
   }
 
@@ -66,9 +77,48 @@ export class EpaperHomeComponent implements OnInit {
     anchor.click();
   }
 
+  openPopup(epaper: Epaper): void {
+    this.popupPdfUrl = epaper.pdfUrl;
+    if (this.isDriveLink(epaper.pdfUrl)) {
+      const url = this.getDrivePreviewUrl(epaper.pdfUrl);
+      this.popupDrivePreviewUrl = this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    } else {
+      this.popupDrivePreviewUrl = '';
+    }
+    this.popupPageNumber = 1;
+    this.popupPageCount = 1;
+    this.popupZoom = 1;
+    this.popupOpen = true;
+  }
+
+  closePopup(): void {
+    this.popupOpen = false;
+  }
+
+  onPopupPageCountChange(count: number): void {
+    this.popupPageCount = count;
+  }
+
+  popupNextPage(): void {
+    this.popupPageNumber = Math.min(this.popupPageNumber + 1, this.popupPageCount);
+  }
+
+  popupPrevPage(): void {
+    this.popupPageNumber = Math.max(this.popupPageNumber - 1, 1);
+  }
+
+  popupZoomIn(): void {
+    this.popupZoom = Math.min(this.popupZoom + 0.1, this.popupMaxZoom);
+  }
+
+  popupZoomOut(): void {
+    this.popupZoom = Math.max(this.popupZoom - 0.1, this.popupMinZoom);
+  }
+
   private loadEditions(): void {
     this.epaperService.getEditions().subscribe((editions) => {
       this.editions = editions;
+      console.log('Editions loaded:', editions);
       if (!this.selectedEditionId) {
         this.selectedEditionId = '';
       }
@@ -90,6 +140,7 @@ export class EpaperHomeComponent implements OnInit {
       .subscribe((items) => {
         this.epapers = items;
         this.isLoading = false;
+        console.log('Epaper data loaded:', items);
         if (this.isBrowser) {
           this.generateThumbnails(items);
         }
@@ -119,7 +170,17 @@ export class EpaperHomeComponent implements OnInit {
         const pdf = await this.pdfViewer.loadDocument(epaper.pdfUrl);
         const canvas = document.createElement('canvas');
         await this.pdfViewer.renderPage(pdf, 1, canvas, 0.3);
-        this.thumbnailMap[epaper.id] = canvas.toDataURL('image/jpeg', 0.8);
+        // Crop to top half
+        const cropCanvas = document.createElement('canvas');
+        cropCanvas.width = canvas.width;
+        cropCanvas.height = Math.floor(canvas.height / 2);
+        const cropCtx = cropCanvas.getContext('2d');
+        if (cropCtx) {
+          cropCtx.drawImage(canvas, 0, 0, canvas.width, cropCanvas.height, 0, 0, canvas.width, cropCanvas.height);
+          this.thumbnailMap[epaper.id] = cropCanvas.toDataURL('image/jpeg', 0.8);
+        } else {
+          this.thumbnailMap[epaper.id] = canvas.toDataURL('image/jpeg', 0.8);
+        }
         this.cdr.detectChanges();
       } catch {
         this.thumbnailMap[epaper.id] = this.createTextThumbnail(epaper.title, epaper.date);
@@ -129,6 +190,18 @@ export class EpaperHomeComponent implements OnInit {
 
   private isDriveLink(url: string): boolean {
     return url.includes('drive.google.com');
+  }
+
+  private getDrivePreviewUrl(url: string): string {
+    const fileIdMatch = url.match(/\/file\/d\/([^/]+)/);
+    if (fileIdMatch && fileIdMatch[1]) {
+      return `https://drive.google.com/file/d/${fileIdMatch[1]}/preview`;
+    }
+    const idMatch = url.match(/[?&]id=([^&]+)/);
+    if (idMatch && idMatch[1]) {
+      return `https://drive.google.com/file/d/${idMatch[1]}/preview`;
+    }
+    return '';
   }
 
   private createTextThumbnail(title: string, date: string): string {

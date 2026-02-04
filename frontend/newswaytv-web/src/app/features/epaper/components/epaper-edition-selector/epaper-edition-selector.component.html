@@ -2,8 +2,8 @@
   <label for="epaper-edition">Edition</label>
   <select
     id="epaper-edition"
-    [ngModel]="selectedEditionId"
-    (ngModelChange)="onEditionChange($event)"
+    [(ngModel)]="selectedEditionId"
+    (change)="onEditionChange($event)"
   >
     <option value="">All editions</option>
     <option *ngFor="let edition of editions" [value]="edition.id">

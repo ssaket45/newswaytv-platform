@@ -1,3 +1,4 @@
+// ...existing code...
 import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { isPlatformBrowser } from '@angular/common';
@@ -15,6 +16,9 @@ import { clamp } from '../../utils/pdf-utils';
   styleUrls: ['./epaper-viewer.component.scss']
 })
 export class EpaperViewerComponent implements OnInit {
+    goBack(): void {
+      window.history.back();
+    }
   epaper: Epaper | null = null;
   pdfUrl = '';
   drivePreviewUrl = '';

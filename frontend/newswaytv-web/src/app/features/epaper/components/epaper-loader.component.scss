@@ -1,0 +1,25 @@
+.epaper-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+}
+.epaper-spinner {
+  width: 48px;
+  height: 48px;
+  border: 6px solid #eee;
+  border-top: 6px solid #8a1c1c;
+  border-radius: 50%;
+  animation: epaper-spin 1s linear infinite;
+  margin-bottom: 16px;
+}
+@keyframes epaper-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+.epaper-loader-text {
+  color: #8a1c1c;
+  font-weight: 600;
+  font-size: 1.1rem;
+}

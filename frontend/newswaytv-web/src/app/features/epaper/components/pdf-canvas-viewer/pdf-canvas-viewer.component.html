@@ -1,3 +1,4 @@
 <div class="canvas-shell">
-  <canvas #canvas></canvas>
+  <canvas #canvas *ngIf="!errorMessage"></canvas>
+  <div class="pdf-error" *ngIf="errorMessage">{{ errorMessage }}</div>
 </div>
